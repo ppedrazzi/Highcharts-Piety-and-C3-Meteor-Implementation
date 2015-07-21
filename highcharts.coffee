@@ -16,30 +16,6 @@ if Meteor.isClient
 
     Template.chart.onRendered () ->
         #https://atmospherejs.com/perak/c3
-        Session.set 'x', [
-          'x'
-          30
-          50
-          75
-          100
-          120
-        ]
-        Session.set 'data1', [
-          'data1'
-          30
-          200
-          100
-          400
-          150
-        ]
-        Session.set 'data2', [
-          'data2'
-          20
-          180
-          240
-          100
-          190
-        ]
         chart = c3.generate(
           bindto: @find('#chartc3')
           data:
@@ -53,9 +29,9 @@ if Meteor.isClient
             ])
         @autorun (tracker) ->
           chart.load columns: [
-            Session.get('x')
-            Session.get('data1')
-            Session.get('data2')
+            ['x', 30, 50, 75, 100, 120]
+            ['data1', 30, 200, 100, 400, 150]
+            ['data2', 20, 180, 240, 100, 190]
             []
           ]
 
