@@ -1,12 +1,21 @@
 
 Data = new Mongo.Collection("data")
+Sparkline = new Mongo.Collection("sparkline")
 
 if Meteor.isClient
     Meteor.startup () ->
         Meteor.call("clearData")
+        Meteor.call("loadSparklineData")
         Meteor.call("buildData", (error, result) ->
             Session.set("randomId", result))
         console.log "Client is alive."
+
+    Template.sparklines.helpers
+    #https://github.com/LumaPictures/meteor-jquery-sparklines
+        data: () ->
+            Sparkline.find()
+        someArray: () ->
+            [1,2,3,4,5]
 
     Template.piety.onRendered () ->
         #http://benpickles.github.io/peity/
@@ -41,6 +50,7 @@ if Meteor.isClient
             [5,3,9,6,5,9,7,3,5,2]
 
     Template.highcharts.events
+        #http://www.highcharts.com/demo/box-plot/grid-light
         'click #addData': () ->
             Meteor.call("newData", (e,r) ->
                 if e
@@ -77,6 +87,13 @@ if Meteor.isServer
 
         removeRandom: (id) ->
             Data.remove({_id: id})
+
+        loadSparklineData: () ->
+            n = 0
+            while n < 100
+                Sparkline.insert
+                    value: Random.fraction() + 100
+                n += 1
 
         newData: () ->
             Data.insert

@@ -4,10 +4,12 @@
 
 <body>
   {{> highcharts}}
-    <hr>
+  <hr>
   {{> piety}}
  <hr>
   {{> chart}}
+  <hr>
+  {{> sparklines}}
 </body>
 
 <template name="highcharts">
@@ -37,4 +39,18 @@
 <template name="chart">
     <h1>Chart c3</h1>
     <div id="chartc3"></div>
+</template>
+
+<template name="sparklines">
+    <h1>Sparklines</h1>
+    {{#with someArray}}
+        {{> sparkline type="line" array=this }}
+    {{/with}}
+    {{#with data}}
+        {{> sparkline type="bar" cursor=this property="value" }}
+        {{> sparkline type="tristate" cursor=this property="value" }}
+        {{> sparkline type="box" cursor=this property="value" }}
+        {{> sparkline type="pie" cursor=this property="value" }}
+        {{> sparkline type="bullet" cursor=this property="value" }}
+    {{/with}}
 </template>
