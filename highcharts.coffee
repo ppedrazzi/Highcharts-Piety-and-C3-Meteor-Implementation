@@ -5,6 +5,7 @@ Sparkline = new Mongo.Collection("sparkline")
 if Meteor.isClient
     Meteor.startup () ->
         Meteor.call("clearData")
+        Meteor.call("clearSparklineData")
         Meteor.call("loadSparklineData")
         Meteor.call("buildData", (error, result) ->
             Session.set("randomId", result))
@@ -85,6 +86,9 @@ if Meteor.isServer
         clearData: () ->
             Data.remove({})
 
+        clearSparklineData: () ->
+            Sparkline.remove({})
+
         removeRandom: (id) ->
             Data.remove({_id: id})
 
@@ -92,7 +96,7 @@ if Meteor.isServer
             n = 0
             while n < 100
                 Sparkline.insert
-                    value: Random.fraction() + 100
+                    value: Random.fraction() *100
                 n += 1
 
         newData: () ->
